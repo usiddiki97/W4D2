@@ -10,13 +10,11 @@ class Employee
     attr_reader :salary
 
 # Write a class Employee that has attributes that return the employee's name,
-# title, salary, and boss.  
-    def initialize(name, salary, title, boss = nil)
-        @name = name
-        @salary = salary
-        @title = title
-        @boss = boss
-    end 
+# title, salary, and boss.
+
+    def initialize(name, title, salary, boss)
+        @name, @title, @salary, @boss = name, title, salary, boss
+    end
     
 # Add a method, bonus(multiplier) to Employee. Non-manager employees should get
 # a bonus like this
@@ -38,8 +36,8 @@ class Manager < Employee
 # that managers might report to higher level managers, of course.
     attr_reader :subordinates
 
-    def initialize(name, salary, title, boss = nil) 
-        super  
+    def initialize(name, title, salary, boss)
+        super
         @subordinates = []
     end
     
@@ -56,14 +54,13 @@ class Manager < Employee
     def total_salary_employees
         total = 0
         @subordinates.each do |person|
-            if person.is_a?(Manager) 
-                total+= (person.salary + person.total_salary_employees)
-            else
-                total+= person.salary
-            end 
-        end 
+            total += person.salary
+            if person is_a?(Manager)
+                total += person.salary + person.total_salary_employees
+            end
+        end
         total
-    end 
+    end
 
 # bonus = (total salary of all sub-employees) * multiplier
 
